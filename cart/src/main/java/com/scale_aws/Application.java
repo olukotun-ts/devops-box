@@ -1,0 +1,33 @@
+package com.scale_aws;
+
+import com.scale_aws.cart_controller.CartController;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Import;
+import org.springframework.web.servlet.HandlerAdapter;
+import org.springframework.web.servlet.HandlerMapping;
+import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
+import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
+
+@SpringBootApplication
+@Import({ CartController.class })
+public class Application {
+
+    // silence console logging
+    String message = "";
+
+    @Bean
+    public HandlerMapping handlerMapping() {
+        return new RequestMappingHandlerMapping();
+    }
+
+    @Bean
+    public HandlerAdapter handlerAdapter() {
+        return new RequestMappingHandlerAdapter();
+    }
+
+    public static void main(String ... args) {
+        SpringApplication.run(Application.class, args);
+    }
+}
