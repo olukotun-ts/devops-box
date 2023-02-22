@@ -1,0 +1,22 @@
+version: 2.1
+
+# orbs:
+
+workflows:
+  build_and_deploy:
+    jobs:
+      - build
+
+jobs:
+  build:
+    docker:
+      - image: cimg/openjdk:11.0
+    steps:
+      - checkout
+      - run:
+          name: Build JAR files
+          command: |
+            cd ../cart
+            mvn -U clean package
+      - store_artifacts:
+          path: cart/target
