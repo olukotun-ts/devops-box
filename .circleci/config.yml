@@ -16,7 +16,7 @@ jobs:
       - run:
           name: Build JAR files
           command: |
-            cd ../cart
+            cd cart
             mvn -U clean package
       - store_artifacts:
           path: cart/target
