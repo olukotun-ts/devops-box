@@ -12,3 +12,7 @@ target
 
 # Serverless directories
 .serverless
+.serverless-offline
+package.json
+package-lock.json
+node_modules
