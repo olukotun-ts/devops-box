@@ -9,6 +9,12 @@ workflows:
       - sast:
           context:
             - dobra
+          matrix:
+            parameters:
+              target-file:
+                - inventory/pom.xml
+                - cart/pom.xml
+                - wishlist/pom.xml
       - build:
           requires:
             - sast
@@ -27,9 +33,13 @@ jobs:
       - store_artifacts:
           path: cart/target
   sast:
+    parameters:
+      target-file:
+        type: string
     docker:
       - image: cimg/base:current
     steps:
       - checkout
       - snyk/scan:
           severity-threshold: high
+          target-file: << parameters.target-file >>
