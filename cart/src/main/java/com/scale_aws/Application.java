@@ -14,9 +14,6 @@ import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandl
 @Import({ CartController.class })
 public class Application {
 
-    // silence console logging
-    String message = "";
-
     @Bean
     public HandlerMapping handlerMapping() {
         return new RequestMappingHandlerMapping();
