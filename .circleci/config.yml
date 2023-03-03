@@ -1,11 +1,15 @@
 version: 2.1
 
-# orbs:
+orbs:
+  snyk: snyk/snyk@1.4.0
 
 workflows:
   build_and_deploy:
     jobs:
-      - build
+      - sast
+      - build:
+          requires:
+            - sast
 
 jobs:
   build:
@@ -20,3 +24,10 @@ jobs:
             mvn -U clean package
       - store_artifacts:
           path: cart/target
+  sast:
+    docker:
+      - image: cimg/base:current
+    steps:
+      - checkout
+      - snyk/scan:
+          severity-threshold: high
