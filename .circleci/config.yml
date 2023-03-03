@@ -10,6 +10,8 @@ workflows:
       - ggshield/scan:
           name: secrets_detection
           revision: $CIRCLE_SHA1
+          context:
+            - dobra
       - static_analysis:
           context:
             - dobra
