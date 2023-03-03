@@ -44,6 +44,10 @@ package:
 
 functions:
   cart_microservice:
+    layers:
+      - arn:aws:lambda:${aws:region}:901920570463:layer:aws-otel-java-wrapper-amd64-ver-1-21-1:1
+    environment:
+      DYNAMO_TABLE: "frontend_monotable"
     handler: com.scale_aws.StreamLambdaHandler::handleRequest
     events:
       - httpApi:

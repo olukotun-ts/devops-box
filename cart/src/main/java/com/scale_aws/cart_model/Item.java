@@ -1,5 +1,8 @@
 package com.scale_aws.cart_model;
 
+import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.*;
+
+@DynamoDbBean
 public class Item {
     private String pk;
     private String sk;
@@ -8,23 +11,11 @@ public class Item {
     private int price;
     private String currency;
     private int quantity;
-    private long productId;
+    private String productId;
     private String photo;
     private String seller;
 
-    public Object getItemId() {
-
-        return new Object();
-    }
-
-    public int getQuantity() {
-
-        return 0;
-    }
-
-    public void setPk() {
-    }
-
+    @DynamoDbPartitionKey
     public String getPk() {
         return pk;
     }
@@ -33,6 +24,7 @@ public class Item {
         this.pk = pk;
     }
 
+    @DynamoDbSortKey
     public String getSk() {
         return sk;
     }
@@ -71,6 +63,22 @@ public class Item {
 
     public void setCurrency(String currency) {
         this.currency = currency;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    public String getProductId() {
+        return productId;
+    }
+
+    public void setProductId(String productId) {
+        this.productId = productId;
     }
 
     public String getPhoto() {

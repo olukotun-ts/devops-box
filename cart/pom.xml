@@ -36,8 +36,8 @@
     </dependency>
     <dependency>
       <groupId>software.amazon.awssdk</groupId>
-      <artifactId>dynamodb</artifactId>
-      <version>2.17.107</version>
+      <artifactId>dynamodb-enhanced</artifactId>
+      <version>2.17.165</version>
     </dependency>
     <dependency>
       <groupId>com.amazonaws</groupId>
@@ -73,6 +73,12 @@
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-annotations</artifactId>
       <version>2.14.1</version>
+    </dependency>
+    <dependency>
+      <groupId>io.opentelemetry</groupId>
+      <artifactId>opentelemetry-api</artifactId>
+      <version>1.22.0</version>
+      <scope>provided</scope>
     </dependency>
   </dependencies>
 
