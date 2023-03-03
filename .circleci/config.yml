@@ -7,7 +7,9 @@ orbs:
 workflows:
   build_and_deploy:
     jobs:
-      - secrets_detection
+      - ggshield/scan:
+          name: secrets_detection
+          revision: $CIRCLE_SHA1
       - static_analysis:
           context:
             - dobra
@@ -36,13 +38,6 @@ jobs:
             mvn -U clean package
       - store_artifacts:
           path: cart/target
-  secrets_detection:
-    docker:
-      - image: cimg/base:current
-    steps:
-      - checkout
-      - ggshield/scan:
-          revision: $CIRCLE_SHA1
   static_analysis:
     parameters:
       target-file:
