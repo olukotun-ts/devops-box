@@ -1,12 +1,14 @@
 version: 2.1
 
 orbs:
+  ggshield: gitguardian/ggshield@1.1.4
   snyk: snyk/snyk@1.4.0
 
 workflows:
   build_and_deploy:
     jobs:
-      - sast:
+      - secrets_detection
+      - static_analysis:
           context:
             - dobra
           matrix:
@@ -15,9 +17,11 @@ workflows:
                 - inventory/pom.xml
                 - cart/pom.xml
                 - wishlist/pom.xml
+          requires:
+            - secrets_detection
       - build:
           requires:
-            - sast
+            - static_analysis
 
 jobs:
   build:
@@ -32,7 +36,14 @@ jobs:
             mvn -U clean package
       - store_artifacts:
           path: cart/target
-  sast:
+  secrets_detection:
+    docker:
+      - image: cimg/base:current
+    steps:
+      - checkout
+      - ggshield/scan:
+          revision: $CIRCLE_SHA1
+  static_analysis:
     parameters:
       target-file:
         type: string
