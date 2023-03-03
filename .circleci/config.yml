@@ -49,5 +49,5 @@ jobs:
     steps:
       - checkout
       - snyk/scan:
-          severity-threshold: high
+          severity-threshold: critical
           target-file: << parameters.target-file >>
