@@ -37,7 +37,7 @@ jobs:
       target-file:
         type: string
     docker:
-      - image: cimg/base:current
+      - image: cimg/openjdk:11.0
     steps:
       - checkout
       - snyk/scan:
