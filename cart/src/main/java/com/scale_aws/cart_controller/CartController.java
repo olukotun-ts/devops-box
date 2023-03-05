@@ -2,6 +2,7 @@ package com.scale_aws.cart_controller;
 
 import com.scale_aws.cart_model.Item;
 import org.apache.logging.log4j.Logger;
+import com.scale_aws.ApiGatewayResponse;
 import org.apache.logging.log4j.LogManager;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -23,9 +24,11 @@ public class CartController {
     private static final DynamoDbEnhancedClient dbClient = DynamoDbEnhancedClient.create();
 
     @RequestMapping(path="/getCart", method= RequestMethod.POST)
-    public List<Item> getCart(@RequestBody String userId) {
+    public ApiGatewayResponse getCart(@RequestBody String userId) {
         logger.info("Serving /getCart");
-        List<Item> cart = new ArrayList<>();
+        List<Item> cart;
+
+        ApiGatewayResponse.Builder responder = ApiGatewayResponse.builder();
 
         try {
             DynamoDbTable<Item> table = dbClient.table(System.getenv("DYNAMO_TABLE"), TableSchema.fromBean(Item.class));
@@ -34,13 +37,14 @@ public class CartController {
             QueryConditional query = QueryConditional.keyEqualTo(Key.builder().partitionValue(pk).build());
 
             cart = new ArrayList(Collections.singleton(table.query(r -> r.queryConditional(query)).items().iterator()));
+            responder.setObjectBody(cart);
         } catch (DynamoDbException e) {
             logger.info("Exception while communicating with DynamoDB, " + e);
         } catch (Exception e) {
             logger.info("Generic Exception while retrieving from Dynamo, " + e);
         }
 
-        return cart;
+        return responder.build();
     }
 
     @RequestMapping(path="/addToCart", method = RequestMethod.POST)

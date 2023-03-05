@@ -86,6 +86,21 @@
           <shadedArtifactAttached>true</shadedArtifactAttached>
           <shadedClassifierName>aws</shadedClassifierName>
         </configuration>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+            <configuration>
+              <artifactSet>
+                <excludes>
+                  <exclude>org.apache.tomcat.embed:*</exclude>
+                </excludes>
+              </artifactSet>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>

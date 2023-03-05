@@ -34,12 +34,17 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Build JAR files
+          name: Build Cart JAR
           command: |
-            cd cart
-            mvn -U clean package
+            cd cart && mvn -U clean package && cd ..
       - store_artifacts:
           path: cart/target
+      - run:
+          name: Build Inventory JAR
+          command: |
+            cd inventory && mvn -U clean package && cd ..
+      - store_artifacts:
+          path: inventory/target
   static_analysis:
     parameters:
       target-file:
