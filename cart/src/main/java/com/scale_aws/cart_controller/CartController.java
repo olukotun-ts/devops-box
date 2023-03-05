@@ -1,48 +1,43 @@
 package com.scale_aws.cart_controller;
 
 import com.scale_aws.cart_model.Item;
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
-import software.amazon.awssdk.regions.Region;
-import software.amazon.awssdk.enhanced.dynamodb.DynamoDbEnhancedAsyncClient;
+import software.amazon.awssdk.enhanced.dynamodb.*;
+import software.amazon.awssdk.enhanced.dynamodb.model.QueryConditional;
+import software.amazon.awssdk.services.dynamodb.model.DynamoDbException;
 
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 @RestController
 @EnableWebMvc
 public class CartController {
     private static final Logger logger = LogManager.getLogger(CartController.class);
-    private static final DynamoDbEnhancedAsyncClient dbClient = DynamoDbEnhancedAsyncClient.builder()
-            .dynamoDbClient()
+
+    private static final DynamoDbEnhancedClient dbClient = DynamoDbEnhancedClient.create();
 
     @RequestMapping(path="/getCart", method= RequestMethod.POST)
-    public List<Item> getCart() {
+    public List<Item> getCart(@RequestBody String userId) {
         logger.info("Serving /getCart");
         List<Item> cart = new ArrayList<>();
 
-        HashMap<String, AttributeValue> keyToGet = new HashMap<String, AttributeValue>();
-
-//        keyToGet.put();
-
         try {
-            GetItemRequest request = GetItemRequest.builder()
-                    .key(keyToGet)
-                    .tableName(System.getenv("DYNAMO_TABLE"))
-                    .build();
+            DynamoDbTable<Item> table = dbClient.table(System.getenv("DYNAMO_TABLE"), TableSchema.fromBean(Item.class));
+            String pk = String.format("cart#%s", userId);
 
+            QueryConditional query = QueryConditional.keyEqualTo(Key.builder().partitionValue(pk).build());
+
+            cart = new ArrayList(Collections.singleton(table.query(r -> r.queryConditional(query)).items().iterator()));
         } catch (DynamoDbException e) {
-            logger.info("Exception while communicating with DynamoDB, " + e.toString());
+            logger.info("Exception while communicating with DynamoDB, " + e);
         } catch (Exception e) {
-            logger.info("Generic Exception while retrieving from Dynamo, " + e.toString())
+            logger.info("Generic Exception while retrieving from Dynamo, " + e);
         }
 
         return cart;

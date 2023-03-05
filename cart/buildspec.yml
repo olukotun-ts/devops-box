@@ -1,0 +1,15 @@
+version: 0.2
+
+phases:
+  pre_build:
+    commands:
+      - echo
+      - something or the other
+  build:
+    commands:
+      - echo
+      - Something or the other
+  post_build:
+    commands:
+      - echo
+      - Something or the other
