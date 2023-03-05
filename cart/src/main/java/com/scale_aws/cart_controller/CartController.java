@@ -50,9 +50,6 @@ public class CartController {
             return null;
         }
 
-        Item cartItem = newItem;
-//        cartItem.setPk();
-
         return newItem;
     }
 
