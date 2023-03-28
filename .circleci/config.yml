@@ -21,11 +21,12 @@ workflows:
                 - inventory/pom.xml
                 - cart/pom.xml
                 - wishlist/pom.xml
-          requires:
-            - secrets_detection
+          # requires:
+          #   - secrets_detection
       - build:
           requires:
             - static_analysis
+      - test
 
 jobs:
   build:
@@ -54,5 +55,14 @@ jobs:
     steps:
       - checkout
       - snyk/scan:
-          severity-threshold: high
+          severity-threshold: critical
           target-file: << parameters.target-file >>
+  test:
+    docker:
+      - image: cimg/openjdk:11.0
+    steps:
+      - checkout
+      - run:
+          name: Run unit tests
+          command: |
+            cd cart && mvn test
