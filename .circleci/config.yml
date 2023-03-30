@@ -21,11 +21,8 @@ workflows:
                 - inventory
                 - cart
                 - wishlist
-          # requires:
-          #   - secrets_detection
-      - build:
           requires:
-            - static_analysis
+            - secrets_detection
       - test:
           matrix:
             parameters:
@@ -33,6 +30,11 @@ workflows:
                 - inventory
                 - cart
                 - wishlist
+          requires:
+            - static_analysis
+      - build:
+          requires:
+            - test
 
 jobs:
   build:
