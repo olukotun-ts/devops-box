@@ -13,6 +13,7 @@ workflows:
           context:
             - dobra
       - static_analysis:
+          name: sast-<< matrix.service >>
           context:
             - dobra
           matrix:
@@ -24,6 +25,7 @@ workflows:
           requires:
             - secrets_detection
       - test:
+          name: test-<< matrix.service >>
           matrix:
             parameters:
               service:
@@ -31,10 +33,17 @@ workflows:
                 - cart
                 - wishlist
           requires:
-            - static_analysis
+            - sast-<< matrix.service >>
       - build:
+          name: build-<< matrix.service >>
+          matrix:
+            parameters:
+              service:
+                - inventory
+                - cart
+                - wishlist
           requires:
-            - test
+            - test-<< matrix.service >>
 
 jobs:
   build:
