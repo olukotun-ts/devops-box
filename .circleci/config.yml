@@ -17,16 +17,22 @@ workflows:
             - dobra
           matrix:
             parameters:
-              target-file:
-                - inventory/pom.xml
-                - cart/pom.xml
-                - wishlist/pom.xml
+              service:
+                - inventory
+                - cart
+                - wishlist
           # requires:
           #   - secrets_detection
       - build:
           requires:
             - static_analysis
-      - test
+      - test:
+          matrix:
+            parameters:
+              service:
+                - inventory
+                - cart
+                - wishlist
 
 jobs:
   build:
@@ -48,7 +54,7 @@ jobs:
           path: inventory/target
   static_analysis:
     parameters:
-      target-file:
+      service:
         type: string
     docker:
       - image: cimg/openjdk:11.0
@@ -56,8 +62,11 @@ jobs:
       - checkout
       - snyk/scan:
           severity-threshold: critical
-          target-file: << parameters.target-file >>
+          target-file: << parameters.service >>/pom.xml
   test:
+    parameters:
+      service:
+        type: string
     docker:
       - image: cimg/openjdk:11.0
     steps:
@@ -65,4 +74,5 @@ jobs:
       - run:
           name: Run unit tests
           command: |
+            cd << parameters.service >>
             mvn test
