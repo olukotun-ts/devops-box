@@ -47,22 +47,20 @@ workflows:
 
 jobs:
   build:
+    parameters:
+      service:
+        type: string
     docker:
       - image: cimg/openjdk:11.0
     steps:
       - checkout
       - run:
-          name: Build Cart JAR
+          name: Build JAR
           command: |
-            cd cart && mvn -U clean package && cd ..
+            cd << parameters.service >> 
+            mvn -U clean package
       - store_artifacts:
-          path: cart/target
-      - run:
-          name: Build Inventory JAR
-          command: |
-            cd inventory && mvn -U clean package && cd ..
-      - store_artifacts:
-          path: inventory/target
+          path: << parameters.service >>/target
   static_analysis:
     parameters:
       service:
