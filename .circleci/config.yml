@@ -1,7 +1,9 @@
 version: 2.1
 
 orbs:
+  aws-cli: circleci/aws-cli@3.1.4
   ggshield: gitguardian/ggshield@1.1.4
+  serverless-framework: circleci/serverless-framework@2.0.1
   snyk: snyk/snyk@1.4.0
 
 workflows:
@@ -44,7 +46,17 @@ workflows:
                 - wishlist
           requires:
             - test-<< matrix.service >>
-
+      - deploy:
+          name: deploy-<< matrix.service >>
+          matrix:
+            parameters:
+              service:
+                - inventory
+                - cart
+                - wishlist
+          requires:
+            - build-<< matrix.service >>
+        
 jobs:
   build:
     parameters:
@@ -85,3 +97,17 @@ jobs:
           command: |
             cd << parameters.service >>
             mvn test
+  deploy:
+    parameters:
+      service:
+        type: string
+    executor: serverless-framework/default
+    steps:
+      - checkout
+      - aws-cli/setup
+      - serverless-framework/setup
+      - run:
+          name: Deploy to AWS Lambda
+          command: |
+            cd << parameters.service >>
+            serverless deploy -v
