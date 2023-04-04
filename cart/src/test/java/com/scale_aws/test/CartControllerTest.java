@@ -2,8 +2,6 @@ package com.scale_aws.test;
 
 import com.scale_aws.Application;
 import com.scale_aws.cart_controller.CartController;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
