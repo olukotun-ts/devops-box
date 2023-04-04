@@ -16,11 +16,5 @@
   </component>
   <component name="connectionPinningManager">
     <option name="doNotPromptForPinning" value="true" />
-    <option name="pinnedConnections">
-      <map>
-        <entry key="aws.codecatalyst" value="sso;https://view.awsapps.com/start" />
-        <entry key="aws.codewhisperer" value="sso;https://view.awsapps.com/start" />
-      </map>
-    </option>
   </component>
 </project>
