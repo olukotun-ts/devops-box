@@ -74,12 +74,14 @@ jobs:
           command: |
             cd << parameters.service >> 
             mvn -U clean package
-      - artifactory/install
+      - run:
+          name: Install JFrog CLI
+          command: curl -fL https://install-cli.jfrog.io | sh
       - run:
           name: Upload JAR to Artifactory
           command: |
             cd << parameters.service >>/target
-            jf rt upload "(*).jar" maven-remote --url $ARTIFACTORY_URL --access-token ARTIFACTORY_API_KEY
+            jf rt upload "(*).jar" default-generic-local --url https://dobrajava.jfrog.io/artifactory/default-generic-local --access-token $ARTIFACTORY_API_KEY
       - store_artifacts:
           path: << parameters.service >>/target
   static_analysis:
