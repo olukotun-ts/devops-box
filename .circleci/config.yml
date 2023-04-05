@@ -75,9 +75,11 @@ jobs:
             cd << parameters.service >> 
             mvn -U clean package
       - artifactory/install
-      - artifactory/configure
-      - artifactory/upload:
-          source: << parameters.service >>/target
+      - run:
+          name: Upload JAR to Artifactory
+          command: |
+            cd << parameters.service >>/target
+            jf rt upload "(*).jar" maven-remote --url $ARTIFACTORY_URL --access-token ARTIFACTORY_API_KEY
       - store_artifacts:
           path: << parameters.service >>/target
   static_analysis:
