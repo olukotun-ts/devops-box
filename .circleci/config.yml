@@ -39,6 +39,8 @@ workflows:
             - sast-<< matrix.service >>
       - build:
           name: build-<< matrix.service >>
+          context:
+            - dobra
           matrix:
             parameters:
               service:
