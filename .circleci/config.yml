@@ -72,6 +72,8 @@ jobs:
           command: |
             cd << parameters.service >> 
             mvn -U clean package
+      - artifactory/install
+      - artifactory/configure
       - artifactory/upload:
           source: << parameters.service >>/target
       - store_artifacts:
