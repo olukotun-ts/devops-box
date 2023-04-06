@@ -126,7 +126,7 @@ jobs:
           role-arn: $AWS_ROLE_ARN_DEVOPSBOX_SERVERLESS
       - serverless-framework/setup
       - attach_workspace:
-          at: << parameters.service >>/target
+          at: << parameters.service >>
       - run:
           name: Deploy to AWS Lambda
           command: |
