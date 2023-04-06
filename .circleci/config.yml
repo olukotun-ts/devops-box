@@ -117,7 +117,7 @@ jobs:
     executor: serverless-framework/default
     steps:
       - checkout
-      - aws-cli/assume-role-with-web-identity:
+      - aws-cli/setup:
           role-arn: $AWS_ROLE_ARN_DEVOPSBOX_SERVERLESS
       - serverless-framework/setup
       - run:
