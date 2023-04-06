@@ -33,10 +33,10 @@
           <groupId>org.springframework.boot</groupId>
           <artifactId>spring-boot-starter-tomcat</artifactId>
         </exclusion>
-        <exclusion>
+        <!-- <exclusion>
           <groupId>org.springframework</groupId>
           <artifactId>spring-webmvc</artifactId>
-        </exclusion>
+        </exclusion> -->
       </exclusions>
     </dependency>
     <dependency>
