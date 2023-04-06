@@ -113,7 +113,7 @@ jobs:
       - run:
           name: Run unit tests
           command: |
-            cd << parameters.service >>
+            cd << parameters.service >>/src/test/java/com/scale_aws/test
             mvn test
   deploy:
     parameters:
