@@ -131,9 +131,10 @@ jobs:
           name: Deploy to AWS Lambda
           command: |
             cd << parameters.service >>
-            ls -al
             serverless deploy --conceal --verbose --region $AWS_DEFAULT_REGION
       - run:
           name: Delete CloudFormation stack
           when: on_fail
-          command: serverless remove --verbose --region $AWS_DEFAULT_REGION
+          command: |
+            cd << parameters.service >>
+            serverless remove --verbose --region $AWS_DEFAULT_REGION
