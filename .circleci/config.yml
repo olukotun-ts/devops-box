@@ -81,7 +81,7 @@ jobs:
           name: Upload JAR to Artifactory
           command: |
             # cd << parameters.service >>/target
-            jf rt upload << parameters.service >>/target/*.jar default-generic-local --url https://dobrajava.jfrog.io/artifactory/default-generic-local --access-token $ARTIFACTORY_API_KEY
+            jf rt upload << parameters.service >>"/target/*.jar" default-generic-local --url https://dobrajava.jfrog.io/artifactory/default-generic-local --access-token $ARTIFACTORY_API_KEY
       - store_artifacts:
           path: << parameters.service >>/target
   static_analysis:
