@@ -51,6 +51,8 @@ workflows:
             - test-<< matrix.service >>
       - deploy:
           name: deploy-<< matrix.service >>
+          context:
+            - dobra
           matrix:
             parameters:
               service:
