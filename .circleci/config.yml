@@ -86,6 +86,10 @@ jobs:
             jf rt upload << parameters.service >>"/target/*.jar" default-generic-local --url https://dobrajava.jfrog.io/artifactory/default-generic-local --access-token $ARTIFACTORY_API_KEY
       - store_artifacts:
           path: << parameters.service >>/target
+      - persist_to_workspace:
+          paths: 
+            - << parameters.service >>/target
+
   static_analysis:
     parameters:
       service:
@@ -120,8 +124,11 @@ jobs:
       - aws-cli/setup:
           role-arn: $AWS_ROLE_ARN_DEVOPSBOX_SERVERLESS
       - serverless-framework/setup
+      - attach_workspace:
+          at: << parameters.service >>/target
       - run:
           name: Deploy to AWS Lambda
           command: |
             cd << parameters.service >>
+            ls -al
             serverless deploy --conceal --verbose --region $AWS_DEFAULT_REGION
