@@ -12,6 +12,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import software.amazon.awssdk.enhanced.dynamodb.*;
 import software.amazon.awssdk.enhanced.dynamodb.model.QueryConditional;
+import software.amazon.awssdk.http.HttpStatusCode;
 import software.amazon.awssdk.services.dynamodb.model.DynamoDbException;
 
 import java.util.*;
@@ -22,6 +23,20 @@ public class CartController {
     private static final Logger logger = LogManager.getLogger(CartController.class);
 
     private static final DynamoDbEnhancedClient dbClient = DynamoDbEnhancedClient.create();
+
+    @RequestMapping(path="/getCartDebug", method=RequestMethod.POST)
+    public ApiGatewayResponse getCartDebug(@RequestBody String userId) {
+        logger.info("Serving /getCartDebug");
+        List<Item> cart = new ArrayList<>();
+
+        ApiGatewayResponse.Builder responder = ApiGatewayResponse.builder();
+
+        responder.setObjectBody(cart);
+
+        responder.setStatusCode(HttpStatusCode.OK);
+
+        return responder.build();
+    }
 
     @RequestMapping(path="/getCart", method= RequestMethod.POST)
     public ApiGatewayResponse getCart(@RequestBody String userId) {
