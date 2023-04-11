@@ -11,13 +11,6 @@ orbs:
 workflows:
   build_and_deploy:
     jobs:
-      - maven/test:
-          matrix:
-            parameters:
-              app_src_directory:
-                - inventory
-                - cart
-                - wishlist
       - ggshield/scan:
           name: secrets_detection
           revision: $CIRCLE_SHA1
@@ -35,11 +28,10 @@ workflows:
                 - wishlist
           requires:
             - secrets_detection
-      - test:
-          name: test-<< matrix.service >>
+      - maven/test:
           matrix:
             parameters:
-              service:
+              app_src_directory:
                 - inventory
                 - cart
                 - wishlist
@@ -110,19 +102,6 @@ jobs:
       - snyk/scan:
           severity-threshold: critical
           target-file: << parameters.service >>/pom.xml
-  test:
-    parameters:
-      service:
-        type: string
-    docker:
-      - image: cimg/openjdk:11.0
-    steps:
-      - checkout
-      - run:
-          name: Run unit tests
-          command: |
-            cd << parameters.service >>
-            mvn test
   deploy:
     parameters:
       service:
