@@ -37,7 +37,7 @@ workflows:
                 - cart
                 - wishlist
           requires:
-            - sast-<< matrix.service >>
+            - sast-<< matrix.app_src_directory >>
       - build:
           name: build-<< matrix.service >>
           context:
