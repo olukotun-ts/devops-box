@@ -29,6 +29,7 @@ workflows:
           requires:
             - secrets_detection
       - maven/test:
+          name: test-<< matrix.app_src_directory >>
           matrix:
             parameters:
               app_src_directory:
