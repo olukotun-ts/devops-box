@@ -36,8 +36,8 @@ workflows:
                 - inventory
                 - cart
                 - wishlist
-          # requires:
-          #   - sast-<< matrix.service >>
+          requires:
+            - sast-<< matrix.service >>
       - build:
           name: build-<< matrix.service >>
           context:
